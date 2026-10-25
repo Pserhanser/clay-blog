@@ -1,7 +1,7 @@
 {
-  "siteName": "段枫的博客",
+  "siteName": "Pser_hanserの个人博客",
   "siteDescription": "记录 AI、代码、网站搭建和技术观察。",
-  "siteAuthor": "段枫",
+  "siteAuthor": "Pser_hanser",
   "githubUser": "laogou717",
   "githubRepo": "https://github.com/laogou717/clay-blog",
   "projectOverrides": {
@@ -15,16 +15,284 @@
   "projectGroups": [
     {
       "title": "资源下载",
-      "description": "文章里提到的网盘、脚本和可复用资料，可在本文件中增删条目或整组。",
+      "description": "攻略文档与资料表。状态以资料合集中的标注为准，部分文档仍在制作或暂停更新。",
       "items": [
         {
-          "title": "静态站点部署实践",
-          "owner": "Blog",
-          "description": "示例资源条目：静态博客部署到主流托管平台的通用步骤。",
+          "title": "火焰纹章万缕千丝 Wiki",
+          "owner": "游戏 Wiki",
+          "description": "火焰纹章万缕千丝攻略 Wiki，正在制作中。",
           "icon": "globe",
-          "href": "/posts/技术/deploy-static/",
-          "article": "/posts/技术/deploy-static/",
-          "tags": ["部署", "示例"]
+          "href": "https://fireemblem.top/",
+          "tags": [
+            "正在制作"
+          ]
+        },
+        {
+          "title": "女神转生WIKI",
+          "owner": "游戏 Wiki",
+          "description": "女神转生系列资料 Wiki。",
+          "icon": "globe",
+          "href": "https://wiki.biligame.com/persona/%E9%A6%96%E9%A1%B5",
+          "tags": [
+            "已完成",
+            "Wiki"
+          ]
+        },
+        {
+          "title": "SMT5 信息基础表 Ver3.1",
+          "owner": "腾讯文档",
+          "description": "真女神转生5 信息基础表。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DUWVTWEhoa1ZpeHFT",
+          "tags": [
+            "已完成",
+            "数据表"
+          ]
+        },
+        {
+          "title": "P5R在线文档 资料整理",
+          "owner": "腾讯文档",
+          "description": "女神异闻录5 皇家版资料整理。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DUWVoSFVsS29KRE93",
+          "tags": [
+            "已完成",
+            "数据表"
+          ]
+        },
+        {
+          "title": "异度神剑3全信息整理 Ver1.10",
+          "owner": "腾讯文档",
+          "description": "异度神剑3全信息资料整理。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DUXNGU0ltd05SWFhO",
+          "tags": [
+            "已完成",
+            "数据表"
+          ]
+        },
+        {
+          "title": "最终幻想 核心危机RU 全要素攻略文档",
+          "owner": "腾讯文档",
+          "description": "核心危机 Reunion 全要素攻略。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/doc/DUUt6eUtuU3ZBQU5S",
+          "tags": [
+            "已完成",
+            "攻略"
+          ]
+        },
+        {
+          "title": "火焰纹章无双数据整理",
+          "owner": "腾讯文档",
+          "description": "火焰纹章无双数据整理。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DUUN2cURSV2lwUVln",
+          "tags": [
+            "已完成",
+            "数据表"
+          ]
+        },
+        {
+          "title": "【火纹Engage】在线数据表格！",
+          "owner": "腾讯文档",
+          "description": "火焰纹章 Engage 在线数据表格。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DUXN5ZUlMVFNIdVZM",
+          "tags": [
+            "已完成",
+            "不再更新"
+          ]
+        },
+        {
+          "title": "八方旅人2 数据文档",
+          "owner": "腾讯文档",
+          "description": "八方旅人2 数据文档。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DR2hpREFBZk1BbHJ1",
+          "tags": [
+            "不再更新",
+            "暂停中"
+          ]
+        },
+        {
+          "title": "【八方旅人2】攻略文档",
+          "owner": "腾讯文档",
+          "description": "八方旅人2 攻略文档。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/doc/DR1RFYnVvTUFCTEt2",
+          "tags": [
+            "不再更新",
+            "暂停中"
+          ]
+        },
+        {
+          "title": "塞尔达传说王国之泪：文档计划",
+          "owner": "腾讯文档",
+          "description": "塞尔达传说 王国之泪文档计划。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DR1NWVGJkbmpXcVBG?tab=BB08J2",
+          "tags": [
+            "不再更新",
+            "暂停中"
+          ]
+        },
+        {
+          "title": "星之海洋2 攻略资料",
+          "owner": "腾讯文档",
+          "description": "星之海洋2 攻略资料。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DR2ZWSXBoVU9KZXBY?tab=qekmk2",
+          "tags": [
+            "不再更新",
+            "暂停中"
+          ]
+        },
+        {
+          "title": "P3reload 攻略文档",
+          "owner": "腾讯文档",
+          "description": "女神异闻录3 Reload 攻略文档。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DR0FUS3RxZWVwa1Zn",
+          "tags": [
+            "暂停中",
+            "攻略"
+          ]
+        },
+        {
+          "title": "P3R DLC Joker攻略笔记",
+          "owner": "飞书文档",
+          "description": "P3R DLC Joker 攻略笔记。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/docx/JVjCd00OMo4jhgxZqp9c6ShGnmf?from=from_copylink",
+          "tags": [
+            "已完成",
+            "攻略"
+          ]
+        },
+        {
+          "title": "庄园领主 攻略文档 Ver0.1",
+          "owner": "飞书文档",
+          "description": "庄园领主攻略文档，等待正式版后继续更新。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/docx/ErAlddZc4opi40xjwYmcz4EUnYe",
+          "tags": [
+            "制作中",
+            "不再更新"
+          ]
+        },
+        {
+          "title": "真女神转生5 复仇",
+          "owner": "飞书文档",
+          "description": "真女神转生5 复仇资料文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/docx/GPYxdaSgDosUeLxjC71cRdxDnmc?from=from_copylink",
+          "tags": [
+            "已完成",
+            "持续制作"
+          ]
+        },
+        {
+          "title": "黑神话悟空 资料文档",
+          "owner": "飞书文档",
+          "description": "黑神话悟空资料文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/R6PAsfzXthamgytauIFcScUcn7f?from=from_copylink",
+          "tags": [
+            "已完成",
+            "持续制作"
+          ]
+        },
+        {
+          "title": "暗喻幻想 白金攻略资料文档",
+          "owner": "飞书文档",
+          "description": "暗喻幻想白金攻略资料文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/HWfwsTte3hBP0RtWjYjciJuQnbh?from=from_copylink",
+          "tags": [
+            "已完成",
+            "持续制作"
+          ],
+          "links": [
+            {
+              "label": "谷歌文档",
+              "href": "https://docs.google.com/spreadsheets/d/1wUw7SAcxbUwePtqtEA2o2Zl78m5C_272LxTSken0QYo/edit?gid=0#gid=0"
+            }
+          ]
+        },
+        {
+          "title": "浪漫沙加2 攻略文档",
+          "owner": "飞书文档",
+          "description": "浪漫沙加2攻略文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/A1RlsW1REh3bsLthN8QchscPnlc?from=from_copylink",
+          "tags": [
+            "已完成",
+            "不再更新"
+          ]
+        },
+        {
+          "title": "DQ3HD",
+          "owner": "飞书文档",
+          "description": "DQ3 HD 资料文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/HAhQsO0vWhmJk6tj03vc8O0rnJe?from=from_copylink",
+          "tags": [
+            "制作中"
+          ]
+        },
+        {
+          "title": "明末 渊虚之羽",
+          "owner": "飞书文档",
+          "description": "明末：渊虚之羽资料文档，Ver 1.0 基本完成。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/docx/XSbrdtBYEoP1PqxosDLc5IAFnng?from=from_copylink",
+          "tags": [
+            "已完成"
+          ]
+        },
+        {
+          "title": "空之轨迹1st",
+          "owner": "飞书文档",
+          "description": "空之轨迹 1st 文档，Ver 1.0 基本完成。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/wiki/HB7TwWKk7ieINAk9zJ3cmujrnOH?from=from_copylink&sheet=55kfa6",
+          "tags": [
+            "制作中",
+            "不再更新"
+          ]
+        },
+        {
+          "title": "歧路旅人0",
+          "owner": "飞书文档",
+          "description": "歧路旅人0文档，Ver 1.0 基本完成。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/CZuLs2CeNhgiEqtoDWhchRx8nkf?from=from_copylink&sheet=IcFnGX",
+          "tags": [
+            "制作中",
+            "不再更新"
+          ]
+        },
+        {
+          "title": "勇者斗恶龙7重构版",
+          "owner": "飞书文档",
+          "description": "勇者斗恶龙7重构版资料文档。",
+          "icon": "file",
+          "href": "https://d0zjwjbcg6.feishu.cn/sheets/FDzlslEwxho8NHtOJTFcUfk8no2?from=from_copylink",
+          "tags": [
+            "制作中"
+          ]
+        },
+        {
+          "title": "火焰纹章万缕千丝",
+          "owner": "腾讯文档",
+          "description": "火焰纹章万缕千丝资料表，由江雪之舞（B站同名）制作。",
+          "icon": "bilibili",
+          "href": "https://docs.qq.com/sheet/DV0N0VUZLSXRmUWFq?tab=bxlbpf",
+          "tags": [
+            "制作中",
+            "协作"
+          ]
         }
       ]
     }

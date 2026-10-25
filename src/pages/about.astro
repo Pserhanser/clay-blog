@@ -204,6 +204,11 @@ const projectGroups = [
                     <span class="proj__tags">
                       {item.tags.map((tag) => <small>{tag}</small>)}
                     </span>
+                  {'links' in item && item.links && (
+                    <span class="proj__extra-links">
+                      {item.links.map((link) => <a href={link.href} target="_blank" rel="noopener noreferrer">{link.label}</a>)}
+                    </span>
+                  )}
                     {item.articleHref && (
                       <a class="proj__note" href={item.articleHref}>
                         笔记

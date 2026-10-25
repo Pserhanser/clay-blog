@@ -1,4 +1,7 @@
 import { getCollection } from 'astro:content';
+import siteConfig from '../data/site.config.json';
+import cloudResources from '../data/cloud-resources.json';
+import { resourceSearchEntry } from '../lib/search.mjs';
 import {
   formatDate,
   getPostCategory,
@@ -19,6 +22,7 @@ export async function GET() {
     const description = getPostExcerpt(post) ?? '';
 
     return {
+      kind: 'post',
       title: post.data.title,
       description,
       url: getPostPath(post),
@@ -39,7 +43,9 @@ export async function GET() {
     };
   });
 
-  return new Response(JSON.stringify(items), {
+  const resources = [...cloudResources, ...siteConfig.projectGroups[0].items].map(resourceSearchEntry);
+
+  return new Response(JSON.stringify([...resources, ...items]), {
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
     },

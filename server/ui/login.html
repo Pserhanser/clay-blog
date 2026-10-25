@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>管理后台登录 · Pser_hanser</title>
+  <link rel="icon" href="/avatars/pser-hanser-avatar.jpg"><link rel="stylesheet" href="/admin-assets/admin.css">
+  <script src="/admin-assets/login.js" type="module"></script>
+</head>
+<body class="login-page">
+  <main class="login-layout">
+    <section class="login-story">
+      <a class="brand" href="/"><img src="/avatars/pser-hanser-avatar.jpg" alt="" width="40" height="40"><span>Pser_hanser<span class="brand-caption">个人博客 · 管理中心</span></span></a>
+      <div class="login-intro"><span class="eyebrow">INSIGHTS FOR YOUR BLOG</span><h1>每一次访问，<br>都有迹可循。</h1><p>从访问趋势到热门攻略，<br>在一个清晰的面板里了解你的读者。</p><div class="story-tags"><span>访问趋势</span><span>页面分析</span><span>来源洞察</span></div></div>
+      <div class="login-note"><span class="status-dot"></span>统计数据仅管理员可见</div>
+    </section>
+    <section class="login-form-panel">
+      <div class="login-card"><div class="mini-logo">P<span>↗</span></div><h2>欢迎回来</h2><p class="muted">登录后查看博客的流量与访客数据。</p>
+        <form id="login-form">
+          <label for="username">管理员账号</label><input id="username" name="username" autocomplete="username" required maxlength="100" placeholder="输入你的账号">
+          <label for="password">密码</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" required maxlength="256" placeholder="输入登录密码"><button id="toggle-password" type="button" aria-label="显示密码">显示</button></div>
+          <p id="login-error" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="primary-button" id="login-submit">登录管理中心 <span aria-hidden="true">↗</span></button>
+        </form>
+        <p class="login-security">此入口仅供博客管理员使用</p><a class="back-link" href="/">← 返回个人博客</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

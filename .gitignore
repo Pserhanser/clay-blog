@@ -18,3 +18,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .DS_Store
+__pycache__/
+*.pyc
+.private/
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
