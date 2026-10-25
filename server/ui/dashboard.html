@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow"><title>流量分析 · Pser_hanser 管理中心</title>
+  <link rel="icon" href="/avatars/pser-hanser-avatar.jpg"><link rel="stylesheet" href="/admin-assets/admin.css">
+  <script src="/admin-assets/dashboard.js" type="module"></script>
+</head>
+<body class="dashboard-page">
+  <aside class="sidebar">
+    <a class="brand" href="/"><img src="/avatars/pser-hanser-avatar.jpg" alt="" width="38" height="38"><span>Pser_hanser<span class="brand-caption">博客管理中心</span></span></a>
+    <p class="nav-heading">WORKSPACE</p><a href="/admin/" class="side-link is-active" aria-current="page"><span aria-hidden="true">▥</span> 流量分析 <span class="nav-pill">PV</span></a>
+    <a href="/" class="side-link"><span aria-hidden="true">⌂</span> 查看博客 <span class="nav-external">↗</span></a>
+    <a href="/archive/" class="side-link"><span aria-hidden="true">▤</span> 攻略资源 <span class="nav-external">↗</span></a>
+    <div class="sidebar-bottom"><div class="private-note"><span class="status-dot"></span>私有管理空间<p>访客数据仅登录后可见</p></div><div class="account"><span class="account-avatar">P</span><div><strong id="account-name">管理员</strong><small>站点所有者</small></div><button data-logout title="退出登录" aria-label="退出登录">⇥</button></div></div>
+  </aside>
+  <div class="dashboard-main">
+    <header class="topbar"><span>管理中心 <span class="crumb-sep">/</span> <strong>流量分析</strong></span><div><span class="live-badge"><i></i> 正在连接</span><a href="/">访问站点 ↗</a><button class="mobile-logout" data-logout>退出登录</button></div></header>
+    <main class="analytics-content">
+      <div class="page-heading"><div><p class="eyebrow">ANALYTICS OVERVIEW</p><h1>流量与访客</h1><p class="muted">了解每一次到访，找到读者最感兴趣的内容。</p></div><button class="outline-button" id="export">↓ 导出页面数据</button></div>
+      <section class="range-toolbar" aria-label="统计日期筛选"><div class="range-presets"><button data-days="1">今日</button><button data-days="7" class="selected" aria-pressed="true">近 7 天</button><button data-days="30">近 30 天</button></div><form id="range-form"><label class="sr-only" for="date-from">开始日期</label><input type="date" id="date-from" required><span>至</span><label class="sr-only" for="date-to">结束日期</label><input type="date" id="date-to" required><button class="filter-apply" type="submit">查询</button></form></section>
+      <p id="dashboard-error" class="form-error" role="alert" hidden></p>
+      <section class="metric-grid" aria-label="访问指标">
+        <article class="metric-card"><div class="metric-label">今日访问量 <span class="metric-icon mint">↗</span></div><div class="metric-value" data-metric="today.pv">—</div><p>PV <span>昨日 <b data-metric="yesterday.pv">—</b> 次</span></p></article>
+        <article class="metric-card"><div class="metric-label">今日访客数 <span class="metric-icon violet">♧</span></div><div class="metric-value" data-metric="today.uv">—</div><p>UV <span>昨日 <b data-metric="yesterday.uv">—</b> 人</span></p></article>
+        <article class="metric-card"><div class="metric-label">累计访问量 <span class="metric-icon blue">▥</span></div><div class="metric-value" data-metric="total.pv">—</div><p>PV <span>从统计接入后累积</span></p></article>
+        <article class="metric-card"><div class="metric-label">累计访客数 <span class="metric-icon peach">◎</span></div><div class="metric-value" data-metric="total.uv">—</div><p>UV <span>已识别的独立浏览器</span></p></article>
+      </section>
+      <section class="panel trend-panel"><div class="panel-heading"><div><h2>每日数据</h2><p id="range-caption">正在读取数据…</p></div><div class="chart-legend"><span><i class="pv-dot"></i> 访问量 PV</span><span><i class="uv-dot"></i> 访客数 UV</span><span><i class="click-dot"></i> 点击量</span></div></div><div class="trend-summary"><span>区间访问量 <strong id="range-pv">—</strong></span><span>区间访客数 <strong id="range-uv">—</strong></span><span>链接点击 <strong id="range-clicks">—</strong></span></div><div id="trend-chart" role="img" aria-label="每日访问量和访客数趋势图"></div><p id="empty-chart" class="empty-state" hidden>还没有访问记录。打开博客后，新的访问会从这里开始呈现。</p></section>
+      <section class="panel clicks-panel"><div class="panel-heading"><div><h2>链接点击分析</h2><p>选定日期内的链接排行，重复点击当天只记一次</p></div><div class="click-summary"><span>累计点击 <strong data-metric="total.clicks">—</strong></span><span title="点击过链接的独立访客 / 区间访客数">访客点击率 <strong id="click-rate">—</strong></span></div></div><div class="table-scroll"><table><thead><tr><th>链接 / 模块标题</th><th>点击次数</th><th>点击访客</th><th>点击占比</th></tr></thead><tbody id="links-table"></tbody></table></div></section>
+      <div class="analysis-grid"><section class="panel"><div class="panel-heading"><div><h2>热门页面</h2><p>选定日期内访问量最高的 20 个页面</p></div><span class="panel-badge">TOP 20</span></div><div class="table-scroll"><table><thead><tr><th>页面 / 标题</th><th>访问量 PV</th><th>访客数 UV</th></tr></thead><tbody id="pages-table"></tbody></table></div></section><section class="panel"><div class="panel-heading"><div><h2>访问来源</h2><p>读者从哪里找到你的博客</p></div><span class="soft-icon">↗</span></div><div id="sources-list" class="breakdown-list"></div><div class="device-section"><h3>设备分布</h3><div id="devices-list" class="devices-list"></div></div></section></div>
+      <section class="panel recent-panel"><div class="panel-heading"><div><h2>最近到访</h2><p>仅展示匿名访客标识，不保存原始 IP</p></div><span class="panel-badge">最近 20 条</span></div><div class="table-scroll"><table><thead><tr><th>访问时间</th><th>访客</th><th>访问页面</th><th>来源</th><th>设备</th></tr></thead><tbody id="recent-table"></tbody></table></div></section>
+      <footer class="dashboard-footer"><span>统计口径：同一浏览器、同一页面、北京时间当天只计一次，刷新不重复累加。</span><span id="updated-at"></span></footer>
+    </main>
+  </div>
+</body>
+</html>

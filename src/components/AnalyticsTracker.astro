@@ -1,0 +1,52 @@
+<script>
+  const visited = new WeakSet<HTMLElement>();
+  let queue = Promise.resolve();
+
+  function enabled() {
+    return location.hostname === 'hanser.fireemblem.top' ||
+      (['localhost', '127.0.0.1'].includes(location.hostname) && location.port === '4322');
+  }
+
+  function record(type: 'visit' | 'click', extra = {}) {
+    if (!enabled() || location.pathname.startsWith('/admin')) return;
+    const payload = {
+      path: location.pathname,
+      title: document.title,
+      referrer: document.referrer ? new URL(document.referrer).origin : '',
+      ...extra,
+    };
+    const send = async () => {
+      await fetch(`/api/analytics/${type}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        keepalive: true,
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(8000),
+      });
+    };
+    // Serialize first-time visitor cookie creation, including across browser tabs.
+    queue = queue.then(() => navigator.locks ? navigator.locks.request('hanser-analytics', send) : send()).catch(() => {});
+  }
+
+  function trackPage() {
+    const page = document.querySelector<HTMLElement>('main');
+    if (!page || visited.has(page)) return;
+    visited.add(page);
+    record('visit');
+  }
+  document.addEventListener('astro:page-load', trackPage);
+  trackPage();
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest<HTMLAnchorElement>('a[href]');
+    if (!link || link.hasAttribute('download')) return;
+    const destination = new URL(link.href, location.href);
+    if (!['https:', 'http:'].includes(destination.protocol) || destination.pathname.startsWith('/admin')) return;
+    if (destination.origin === location.origin && destination.pathname === location.pathname) return;
+    record('click', {
+      target: destination.origin + destination.pathname,
+      label: (link.getAttribute('aria-label') || link.textContent || destination.hostname).trim().slice(0, 120),
+    });
+  });
+</script>

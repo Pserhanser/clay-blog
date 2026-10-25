@@ -1,0 +1,25 @@
+[Unit]
+Description=Hanser Blog Private Analytics
+After=network.target
+
+[Service]
+Type=simple
+User=hanser-blog
+Group=hanser-blog
+WorkingDirectory=/var/www/hanser.fireemblem.top/current
+ExecStart=/usr/bin/python3 -m server.app --api-only --port 4322 --config /etc/hanser-blog/admin.json --database /var/lib/hanser-blog/traffic.sqlite3
+Restart=on-failure
+RestartSec=3
+UMask=0077
+StateDirectory=hanser-blog
+StateDirectoryMode=0700
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hanser-blog
+MemoryMax=256M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target

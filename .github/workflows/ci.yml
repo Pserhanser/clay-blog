@@ -1,0 +1,55 @@
+name: Blog CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: 单元、登录权限和发布保留策略测试
+        run: npm test
+      - name: 生产构建
+        run: npm run build
+        env:
+          SITE_URL: https://hanser.fireemblem.top
+
+  deploy:
+    needs: check
+    # 首次配置完整并获用户发布授权后，才设置此仓库变量为 true。
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.PRODUCTION_DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: production
+    concurrency:
+      group: hanser-blog-production
+      cancel-in-progress: false
+    steps:
+      - name: 通过博客专用受限密钥发布已检查的提交
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          test -n "$SSH_KEY" && test -n "$KNOWN_HOSTS" && test -n "$DEPLOY_HOST"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+          ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -o IdentitiesOnly=yes \
+            -o ServerAliveInterval=30 -o ServerAliveCountMax=10 \
+            ubuntu@"$DEPLOY_HOST" "deploy $RELEASE_SHA"

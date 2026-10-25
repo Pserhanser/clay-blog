@@ -1,35 +1,39 @@
 ---
 import Icon from './Icon.astro';
+import AnalyticsTracker from './AnalyticsTracker.astro';
+import FooterAuth from './FooterAuth.astro';
 import { site } from '../lib/posts';
+import community from '../data/community.json';
 
 const year = new Date().getFullYear();
 
 const channels = [
-  { name: 'Bilibili', icon: 'bilibili', href: 'https://space.bilibili.com/46377861' },
-  { name: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/channel/UCUuwwXFGK8Z3OBrq6PzkmUg' },
-  { name: 'RSS', icon: 'rss', href: '/rss.xml' },
+  { name: 'Bilibili', icon: 'bilibili', href: 'https://space.bilibili.com/43477533' },
+  { name: '抖音', icon: 'douyin', href: 'https://v.douyin.com/xWTt59cOjDU/' },
+  { name: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/@Pser_hanser' },
 ];
 
 const groups = [
-  { name: 'QQ 交流群', icon: 'qq', href: '' },
-  { name: '微信交流群', icon: 'wechat', href: '' },
+  { name: 'QQ 交流群', icon: 'qq', href: community.qqGroup.href },
 ];
 ---
 
 <footer class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__id">
-      <img
-        src="/avatars/avatar.png"
-        alt={site.author}
-        class="site-footer__avatar"
-        width="40"
-        height="40"
-      />
-      <div class="site-footer__id-text">
-        <strong>{site.author}</strong>
-        <span>AI · Code · Web</span>
-      </div>
+      <a class="site-footer__id-link" href="https://space.bilibili.com/43477533" target="_blank" rel="noopener noreferrer" aria-label="Pser_hanser 的 Bilibili 主页">
+        <img
+          src="/avatars/pser-hanser-avatar.jpg"
+          alt="Pser_hanser 头像"
+          class="site-footer__avatar"
+          width="40"
+          height="40"
+        />
+        <div class="site-footer__id-text">
+          <strong>Pser_hanser</strong>
+          <span>Bilibili</span>
+        </div>
+      </a>
     </div>
 
     <nav class="site-footer__links" aria-label="页脚链接">
@@ -61,14 +65,24 @@ const groups = [
           </span>
         )
       ))}
+      <a href="https://ifdian.net/a/Pser_hanser" target="_blank" rel="noopener noreferrer">
+        <img class="site-footer__afdian" src="/icons/afdian.png" alt="" width="20" height="18" />
+        爱发电
+      </a>
+      <FooterAuth />
     </nav>
   </div>
+
+  <AnalyticsTracker />
 
   <div class="site-footer__bar">
     <span>© {year} {site.author}</span>
     <span aria-hidden="true">·</span>
-    <a href={site.url}>{site.url.replace('https://', '')}</a>
-    <span aria-hidden="true">·</span>
     <span>由 <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> 构建</span>
+    <span aria-hidden="true">·</span>
+    <a class="site-footer__source" href="https://github.com/laogou717/clay-blog" target="_blank" rel="noopener noreferrer">
+      <Icon name="github" size={14} />
+      博客源项目
+    </a>
   </div>
 </footer>

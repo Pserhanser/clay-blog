@@ -1,0 +1,88 @@
+<div class="visitor-stats" data-visitor-stats aria-label="网站访问统计">
+  <span>总访问量 <strong data-stat="busuanzi_site_pv">—</strong> 次</span>
+  <span>访客数 <strong data-stat="busuanzi_site_uv">—</strong> 人</span>
+  <span>本页访问量 <strong data-stat="busuanzi_page_pv">—</strong> 次</span>
+</div>
+
+<script>
+  import { getDailyVisitorStats } from '../lib/visitor-stats.mjs';
+
+  const countedElements = new WeakSet<HTMLElement>();
+
+  async function loadVisitorStats() {
+    const container = document.querySelector<HTMLElement>('[data-visitor-stats]');
+    if (!container || countedElements.has(container)) return;
+    if (location.hostname !== 'hanser.fireemblem.top' || location.protocol !== 'https:') {
+      container.title = '本地预览不计入访问统计';
+      return;
+    }
+    countedElements.add(container);
+
+    // The provider's official client uses this POST endpoint. Strip query
+    // strings and fragments so they are neither counted as pages nor shared.
+    let referrer = '';
+    try {
+      const previous = new URL(document.referrer);
+      referrer = previous.origin + previous.pathname;
+    } catch {}
+
+    try {
+      const path = location.pathname;
+      const day = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit',
+      }).format(new Date());
+      const readOrCount = () => getDailyVisitorStats({
+        storage: localStorage,
+        day,
+        path,
+        request: async () => {
+          const response = await fetch('https://cdn.busuanzi.cc/api.php', {
+            method: 'POST',
+            credentials: 'omit',
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({ url: location.origin + path, referrer }),
+            signal: AbortSignal.timeout(8000),
+          });
+          if (!response.ok) throw new Error('Statistics service unavailable');
+          return response.json();
+        },
+      });
+      const stats = navigator.locks
+        ? await navigator.locks.request(`hanser-visit:${day}:${path}`, readOrCount)
+        : await readOrCount();
+      if (!container.isConnected) return;
+      container.title = '同一浏览器同一页面每天只计一次；刷新显示当天缓存的统计';
+      for (const element of container.querySelectorAll<HTMLElement>('[data-stat]')) {
+        const value = stats[element.dataset.stat!];
+        if ((typeof value === 'number' || typeof value === 'string') && /^\d+$/.test(String(value))) {
+          element.textContent = Number(value).toLocaleString('zh-CN');
+        }
+      }
+    } catch {
+      if (container.isConnected) container.title = '访问统计暂时无法加载，请稍后再试';
+    }
+  }
+
+  document.addEventListener('astro:page-load', loadVisitorStats);
+  loadVisitorStats();
+</script>
+
+<style>
+  .visitor-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.25rem;
+    width: min(100% - 2.5rem, 63rem);
+    margin: 0 auto 0.9rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+
+  .visitor-stats strong {
+    color: var(--text);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+</style>

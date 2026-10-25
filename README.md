@@ -1,5 +1,11 @@
 # clay-blog
 
+个人站点：<https://hanser.fireemblem.top> · 个人仓库：<https://github.com/Pserhanser/clay-blog>
+
+更新与发布请遵循 [协作规则](AGENTS.md) 和 [CI/CD 流程](deploy/cloud/WORKFLOW.md)。默认只在本地修改，只有用户明确说“提交PR”后才能提交分支和创建 PR；合并另行授权。
+
+私有流量管理后台的本地运行、账号设置、数据口径和生产接入边界见 [后台说明](docs/private-analytics.md)。运行 `npm run admin` 后，在 `http://127.0.0.1:4322/admin/` 登录；当前后台代码尚未部署到云端。
+
 基于 Astro 的个人博客模板，内容使用 Markdown 管理，包含文章、随笔、归档、分类、标签、搜索、RSS、站点地图和 Twikoo 后端评论。仓库自带示例文章，克隆后可直接构建预览。
 
 ## 项目结构

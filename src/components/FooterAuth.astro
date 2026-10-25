@@ -1,0 +1,110 @@
+---
+import Icon from './Icon.astro';
+---
+
+<span class="footer-auth" data-footer-auth>
+  <a href="/admin/login/?next=%2F" data-footer-login><Icon name="user" size={15} />登录</a>
+  <span class="footer-auth__session" data-footer-session hidden>
+    <a href="/admin/" data-footer-dashboard><Icon name="chart" size={15} />进入后台查看 PV</a>
+    <button type="button" data-footer-logout>退出登录</button>
+  </span>
+  <small class="footer-auth__message" data-footer-message role="status" aria-live="polite"></small>
+</span>
+
+<script>
+  import { announceAuthChange } from '../../server/ui/auth-return.mjs';
+
+  const instances = new WeakMap<HTMLElement, { refresh: () => Promise<void> }>();
+
+  function initializeFooterAuth() {
+    const root = document.querySelector<HTMLElement>('[data-footer-auth]');
+    if (!root) return;
+    const existing = instances.get(root);
+    if (existing) { existing.refresh(); return; }
+    const login = root.querySelector<HTMLAnchorElement>('[data-footer-login]')!;
+    const session = root.querySelector<HTMLElement>('[data-footer-session]')!;
+    const dashboard = root.querySelector<HTMLAnchorElement>('[data-footer-dashboard]')!;
+    const logout = root.querySelector<HTMLButtonElement>('[data-footer-logout]')!;
+    const message = root.querySelector<HTMLElement>('[data-footer-message]')!;
+    let csrf = '';
+    let requestVersion = 0;
+    login.href = `/admin/login/?next=${encodeURIComponent(location.pathname + location.search)}`;
+
+    function signedOut() {
+      csrf = '';
+      login.hidden = false;
+      session.hidden = true;
+      dashboard.removeAttribute('title');
+    }
+
+    async function refresh() {
+      const version = ++requestVersion;
+      try {
+        const response = await fetch('/api/auth/session', {
+          credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(5000),
+        });
+        if (!root?.isConnected || version !== requestVersion) return;
+        if (!response.ok) { signedOut(); return; }
+        const data = await response.json();
+        if (!root?.isConnected || version !== requestVersion) return;
+        if (typeof data.csrf !== 'string' || typeof data.username !== 'string') { signedOut(); return; }
+        csrf = data.csrf;
+        login.hidden = true;
+        session.hidden = false;
+        dashboard.title = `已登录：${data.username}`;
+      } catch {
+        if (root?.isConnected && version === requestVersion) signedOut();
+      }
+    }
+
+    logout.addEventListener('click', async () => {
+      logout.disabled = true;
+      message.textContent = '';
+      ++requestVersion;
+      try {
+        const response = await fetch('/api/auth/logout', {
+          method: 'POST', credentials: 'same-origin',
+          headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrf },
+          body: '{}', signal: AbortSignal.timeout(8000),
+        });
+        if (!response.ok && response.status !== 401) throw new Error('logout failed');
+        signedOut();
+        announceAuthChange();
+      } catch { message.textContent = '退出失败，请重试'; }
+      finally { logout.disabled = false; }
+    });
+    instances.set(root, { refresh });
+    refresh();
+  }
+
+  document.addEventListener('astro:page-load', initializeFooterAuth);
+  window.addEventListener('pageshow', initializeFooterAuth);
+  window.addEventListener('focus', initializeFooterAuth);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) initializeFooterAuth(); });
+  if (typeof BroadcastChannel !== 'undefined') {
+    const channel = new BroadcastChannel('hanser-blog-auth');
+    channel.addEventListener('message', initializeFooterAuth);
+  }
+  initializeFooterAuth();
+</script>
+
+<style>
+  .footer-auth,
+  .footer-auth__session { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  [hidden] { display: none !important; }
+  .footer-auth [data-footer-dashboard] { border-color: var(--brand); color: var(--brand); }
+  .footer-auth button {
+    padding: 0.45rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .footer-auth button:hover { border-color: var(--brand); color: var(--brand); }
+  .footer-auth button:disabled { cursor: wait; opacity: 0.6; }
+  .footer-auth__message { color: var(--brand); font-size: 0.75rem; }
+  .footer-auth__message:empty { display: none; }
+</style>

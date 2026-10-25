@@ -1,124 +1,117 @@
 ---
-import { getCollection } from 'astro:content';
 import Icon from '../components/Icon.astro';
-import PostSummary from '../components/PostSummary.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import {
-  getCategories,
-  getCategoryPath,
-  getTagPath,
-  getTags,
-  groupPostsByYear,
-  sortPosts,
-} from '../lib/posts';
+import siteConfig from '../data/site.config.json';
+import cloudResources from '../data/cloud-resources.json';
+import { resourceCategory } from '../lib/search.mjs';
 
-const posts = sortPosts(await getCollection('posts'));
-const categories = getCategories(posts);
-const tags = getTags(posts);
-const years = groupPostsByYear(posts);
-
-// Show the frequently-used tags; collapse the long tail behind a toggle.
-const primaryTags = tags.slice(0, 16);
-const restTags = tags.slice(16);
+const guideDocuments = siteConfig.projectGroups[0].items;
+const gameLogos: Record<string, string> = {
+  '火焰纹章万缕千丝 Wiki': '/game-logos/thumbs/fire-emblem-fortunes-weave-cover.png',
+  '最终幻想 核心危机RU 全要素攻略文档': '/game-logos/thumbs/crisis-core-reunion.jpg',
+  '【火纹Engage】在线数据表格！': '/game-logos/thumbs/fire-emblem-engage.jpg',
+  'P3R DLC Joker攻略笔记': '/game-logos/thumbs/persona-3-reload.png',
+  'P3reload 攻略文档': '/game-logos/thumbs/persona-3-reload.png',
+  '女神转生WIKI': '/game-logos/thumbs/smt5-vengeance.png',
+  'SMT5 信息基础表 Ver3.1': '/game-logos/thumbs/smt5-vengeance.png',
+  'P5R在线文档 资料整理': '/game-logos/thumbs/persona-5-royal.png',
+  '异度神剑3全信息整理 Ver1.10': '/game-logos/thumbs/xenoblade-3.jpg',
+  '火焰纹章无双数据整理': '/game-logos/thumbs/fire-emblem-warriors.jpg',
+  '八方旅人2 数据文档': '/game-logos/thumbs/octopath-2-cover.jpg',
+  '【八方旅人2】攻略文档': '/game-logos/thumbs/octopath-2-cover.jpg',
+  '塞尔达传说王国之泪：文档计划': '/game-logos/thumbs/zelda-totk.png',
+  '星之海洋2 攻略资料': '/game-logos/thumbs/star-ocean-2-r.jpg',
+  '庄园领主 攻略文档 Ver0.1': '/game-logos/manor-lords.webp',
+  '真女神转生5 复仇': '/game-logos/thumbs/smt5-vengeance.png',
+  '黑神话悟空 资料文档': '/game-logos/thumbs/black-myth-cover.jpg',
+  '暗喻幻想 白金攻略资料文档': '/game-logos/thumbs/metaphor-cover.jpg',
+  '浪漫沙加2 攻略文档': '/game-logos/thumbs/romancing-saga-2.jpg',
+  DQ3HD: '/game-logos/thumbs/dq3-cover.jpg',
+  '明末 渊虚之羽': '/game-logos/thumbs/wuchang-cover.jpg',
+  '空之轨迹1st': '/game-logos/thumbs/trails-cover.jpg',
+  歧路旅人0: '/game-logos/thumbs/octopath-0.jpg',
+  勇者斗恶龙7重构版: '/game-logos/thumbs/dq7-logo.png',
+  火焰纹章万缕千丝: '/game-logos/thumbs/fire-emblem-fortunes-weave-cover.png',
+};
+const docSource = (owner: string) => owner === '腾讯文档' ? 'tencent' : owner === '飞书文档' ? 'feishu' : 'wiki';
+const resourceGroups = [
+  ...['游戏 Wiki', '攻略文档', '资料文档'].map((title) => ({ title, items: guideDocuments.filter((item) => resourceCategory(item) === title) })),
+];
 ---
 
 <BaseLayout
-  title="归档"
-  description="按时间、分类和标签浏览段枫博客的全部文章。"
+  title="攻略资源"
+  description="浏览 Pser_hanser 整理的攻略文档与游戏资料表。"
   pageClass="content-page"
 >
   <section class="archive-page">
     <header class="page-header">
-      <p class="eyebrow">Archive</p>
-      <h1>文章归档</h1>
-      <p>目前收录 {posts.length} 篇文章，可以按时间、分类或标签浏览。</p>
+      <p class="eyebrow">Guides & Resources</p>
+      <div class="page-header__title-row">
+        <h1>攻略资源</h1>
+        <a
+          class="archive-page__afdian"
+          href="https://ifdian.net/a/Pser_hanser"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="在爱发电支持 Pser_hanser"
+          title="爱发电"
+        >
+          <span>赞助支持UP</span>
+          <img src="/icons/afdian.png" alt="爱发电" width="48" height="44" />
+        </a>
+      </div>
+      <p>这里汇集攻略文档与游戏资料表，文档状态以各自说明为准。</p>
     </header>
 
-    <section class="archive-summary" aria-label="内容索引">
-      <div class="taxonomy-panel">
-        <h2><Icon name="layers" size={16} />分类</h2>
-        <div class="term-list">
-          {categories.map((category) => (
-            <a href={getCategoryPath(category.name)}>
-              <span>{category.name}</span>
-              <small>{category.count}</small>
-            </a>
-          ))}
-        </div>
+    <section class="archive-guides archive-cloud" aria-labelledby="cloud-resources-title">
+      <div class="section__header">
+        <h2 id="cloud-resources-title">网盘资源</h2>
+        <p>{cloudResources[0].description}</p>
       </div>
-      <div class="taxonomy-panel">
-        <h2><Icon name="hash" size={16} />标签</h2>
-        <div class="term-list">
-          {primaryTags.map((tag) => (
-            <a href={getTagPath(tag.name)}>
-              <span>{tag.name}</span>
-              <small>{tag.count}</small>
-            </a>
-          ))}
-        </div>
-        {restTags.length > 0 && (
-          <div class="term-more" data-term-more>
-            <div class="term-list term-list--rest">
-              {restTags.map((tag) => (
-                <a href={getTagPath(tag.name)}>
-                  <span>{tag.name}</span>
-                  <small>{tag.count}</small>
-                </a>
-              ))}
-            </div>
-          </div>
-        )}
-        {restTags.length > 0 && (
-          <button type="button" class="term-toggle" data-term-toggle aria-expanded="false">
-            <span class="term-toggle__text">展开其余 {restTags.length} 个</span>
-            <svg
-              class="term-toggle__chev"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </button>
-        )}
+      <div class="doc-links__grid">
+        {cloudResources.map((resource) => <a class="doc-link" href={resource.href} target="_blank" rel="noopener noreferrer">
+          <span class="doc-link__icon" aria-hidden="true">
+            <img src={resource.icon} alt="" loading="lazy" />
+          </span>
+          <span class="doc-link__body">
+            <strong>{resource.title}</strong>
+            <span class="doc-link__tags"><small class="doc-link__tag doc-link__tag--tencent">{resource.owner}</small></span>
+          </span>
+          <Icon name="arrow-up-right" size={16} class="doc-link__arrow" />
+        </a>)}
       </div>
     </section>
 
-    <div class="archive-years">
-      {years.map((group) => (
-        <section class="archive-year">
-          <header class="archive-year__head">
-            <h2 class="archive-year__num">{group.year}</h2>
-            <span class="archive-year__count">{group.posts.length} 篇</span>
-          </header>
-          <div class="post-list">
-            {group.posts.map((post) => <PostSummary post={post} hideYear compact />)}
+    {resourceGroups.map((group) => (
+      group.items.length > 0 && (
+        <section class="archive-guides" aria-labelledby={`group-${group.title}`}>
+          <div class="section__header">
+            <h2 id={`group-${group.title}`}>{group.title}</h2>
+            <p>{group.items.length} 项</p>
+          </div>
+          <div class="doc-links__grid">
+            {group.items.map((item) => (
+              <a class="doc-link" href={item.href} target="_blank" rel="noopener noreferrer">
+                <span class="doc-link__icon" aria-hidden="true">
+                  {gameLogos[item.title]
+                    ? <img src={gameLogos[item.title]} alt="" loading="lazy" />
+                    : <Icon name="game" size={20} />}
+                </span>
+                <span class="doc-link__body">
+                  <strong>{item.title}</strong>
+                  <span class="doc-link__tags">
+                    <small class={`doc-link__tag doc-link__tag--${docSource(item.owner)}`}>{item.owner}</small>
+                    {item.tags.map((tag) => <small class="doc-link__tag">{tag}</small>)}
+                  </span>
+                </span>
+                <Icon name="arrow-up-right" size={16} class="doc-link__arrow" />
+              </a>
+            ))}
           </div>
         </section>
-      ))}
-    </div>
-  </section>
+      )
+    ))}
 
-  <script is:inline data-astro-rerun>
-    (() => {
-      const btn = document.querySelector('[data-term-toggle]');
-      const more = document.querySelector('[data-term-more]');
-      if (!btn || !more) return;
-      const label = btn.querySelector('.term-toggle__text');
-      const rest = more.querySelectorAll('a').length;
-      btn.addEventListener('click', () => {
-        const open = !more.classList.contains('is-open');
-        more.classList.toggle('is-open', open);
-        btn.classList.toggle('is-open', open);
-        btn.setAttribute('aria-expanded', String(open));
-        if (label) label.textContent = open ? '收起标签' : `展开其余 ${rest} 个`;
-      });
-    })();
-  </script>
+  </section>
 </BaseLayout>

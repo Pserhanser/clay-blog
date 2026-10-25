@@ -1,6 +1,13 @@
 ---
 import Icon from './Icon.astro';
-import siteConfig from '../data/site.config.json';
+import community from '../data/community.json';
+
+const socialLinks = [
+  { name: '抖音', icon: 'douyin', href: 'https://v.douyin.com/xWTt59cOjDU/' },
+  { name: 'Bilibili', icon: 'bilibili', href: 'https://space.bilibili.com/43477533' },
+  { name: 'YouTube', icon: 'youtube', href: 'https://www.youtube.com/@Pser_hanser' },
+  { name: 'QQ 交流群', icon: 'qq', href: community.qqGroup.href },
+];
 
 // Trailing slashes matter: hosts 301 `/archive` → `/archive/`, and a redirect
 // makes the browser skip the cross-document view transition.
@@ -19,22 +26,16 @@ const isCurrent = (href: string) =>
   <nav class="site-nav__pill" aria-label="主导航">
     <span class="site-nav__indicator" aria-hidden="true"></span>
     <a href="/" class:list={[isCurrent('/') && 'is-current']} data-nav-route>首页</a>
-    <a href="/notes/" class:list={[isCurrent('/notes/') && 'is-current']} data-nav-route>随笔</a>
-    <a href="/archive/" class:list={[isCurrent('/archive/') && 'is-current']} data-nav-route>归档</a>
-    <a href="/about/" class:list={[isCurrent('/about/') && 'is-current']} data-nav-route>关于</a>
+    <a href="/archive/" class:list={[isCurrent('/archive/') && 'is-current']} data-nav-route>攻略资源</a>
     <span class="site-nav__sep" aria-hidden="true"></span>
-    {siteConfig.githubRepo && (
-      <a
-        href={siteConfig.githubRepo}
-        class="site-nav__icon"
-        aria-label="GitHub 仓库"
-        title="GitHub 仓库"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Icon name="github" size={18} />
+    {socialLinks.map(({ name, icon, href }) => (
+      <a class="site-nav__icon" href={href} target="_blank" rel="noopener noreferrer" aria-label={name} title={name}>
+        <Icon name={icon} size={20} />
       </a>
-    )}
+    ))}
+    <a class="site-nav__icon" href="https://ifdian.net/a/Pser_hanser" target="_blank" rel="noopener noreferrer" aria-label="爱发电" title="爱发电">
+      <img class="site-nav__afdian" src="/icons/afdian.png" alt="" width="24" height="22" />
+    </a>
     <a
       href="/search/"
       class:list={['site-nav__icon', isCurrent('/search/') && 'is-current']}
@@ -172,7 +173,9 @@ const isCurrent = (href: string) =>
   const syncCurrentNavItem = (animate = false) => {
     const pathname = normalizePath(window.location.pathname);
     document.querySelectorAll<HTMLAnchorElement>('.site-nav a[href]').forEach((link) => {
-      const href = normalizePath(new URL(link.href, window.location.href).pathname);
+      const url = new URL(link.href, window.location.href);
+      if (url.origin !== window.location.origin) return;
+      const href = normalizePath(url.pathname);
       const current = href === '/' ? pathname === '/' : pathname.startsWith(href);
       link.classList.remove('is-pending');
       link.classList.toggle('is-current', current);
